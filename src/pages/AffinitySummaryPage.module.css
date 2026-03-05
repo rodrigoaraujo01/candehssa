@@ -41,6 +41,137 @@
   padding: 2px var(--space-sm);
 }
 
+.conditionsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.removeAllBtn {
+  background: none;
+  border: none;
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.removeAllBtn:hover {
+  color: var(--color-text-secondary);
+}
+
+.conditionsSection {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.conditionsAdd {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.conditionSelect {
+  flex: 1;
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-sm);
+  min-width: 0;
+}
+
+.addConditionBtn {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background-color: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-md);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+}
+
+.addConditionBtn:hover:not(:disabled) {
+  background-color: var(--color-accent-hover);
+}
+
+.addConditionBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.conditionTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+
+.conditionTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 2px var(--space-xs) 2px var(--space-sm);
+  color: var(--color-text-primary);
+}
+
+.removeTagBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--color-text-muted);
+  padding: 0 2px;
+  display: flex;
+  align-items: center;
+}
+
+.removeTagBtn:hover {
+  color: var(--color-text-primary);
+}
+
+.conditionEffects {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-top: 1px solid var(--color-border-light);
+  padding-top: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.conditionEffect {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.conditionEffectSource {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
 .empty {
   font-family: var(--font-body);
   color: var(--color-text-muted);
