@@ -1,11 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import { usePlayer } from '../../contexts/PlayerContext'
 import styles from './Layout.module.css'
 
 export default function Layout({ children }) {
   const { signOut } = useAuth()
-  const { player, group } = usePlayer()
   const navigate = useNavigate()
 
   async function handleSignOut() {
@@ -16,22 +14,14 @@ export default function Layout({ children }) {
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
-        <Link to="/mapa" className={styles.brand}>Candeh'ssa</Link>
+        <Link to="/personagem" className={styles.brand}>Candeh'ssa</Link>
         <nav className={styles.nav}>
+          <Link to="/personagem" className={styles.navLink}>Personagem</Link>
           <Link to="/mapa" className={styles.navLink}>Mapa</Link>
-          <Link to="/afinidades" className={styles.navLink}>Afinidades</Link>
         </nav>
-        <div className={styles.info}>
-          {player && (
-            <span className={styles.playerName}>{player.name}</span>
-          )}
-          {group && (
-            <span className={styles.groupName}>{group.name}</span>
-          )}
-          <button onClick={handleSignOut} className={styles.logout}>
-            Sair
-          </button>
-        </div>
+        <button onClick={handleSignOut} className={styles.logout}>
+          Sair
+        </button>
       </header>
       <main className={styles.main}>
         {children}

@@ -19,7 +19,7 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={user ? <Navigate to="/mapa" replace /> : <LandingPage />} />
+      <Route path="/" element={user ? <Navigate to="/personagem" replace /> : <LandingPage />} />
       <Route
         path="/criar-personagem"
         element={
@@ -61,7 +61,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/afinidades"
+        path="/personagem"
         element={
           <ProtectedRoute>
             <Layout><AffinitySummaryPage /></Layout>

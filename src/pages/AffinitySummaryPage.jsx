@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useAffinitySummary } from '../hooks/useAffinitySummary'
+import { usePlayer } from '../contexts/PlayerContext'
 import Loading from '../components/common/Loading'
 import styles from './AffinitySummaryPage.module.css'
 
 export default function AffinitySummaryPage() {
   const { affinities, activeNpcIds, loading, toggleActive } = useAffinitySummary()
+  const { player, group } = usePlayer()
 
   if (loading) return <Loading />
 
@@ -15,7 +17,20 @@ export default function AffinitySummaryPage() {
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>Afinidades</h1>
+      <h1 className={styles.title}>Personagem</h1>
+
+      {player && (
+        <div className={styles.characterCard}>
+          <div className={styles.characterName}>{player.name}</div>
+          <div className={styles.characterMeta}>
+            {player.race && <span className={styles.metaItem}>{player.race}</span>}
+            {player.level && <span className={styles.metaItem}>Nível {player.level}</span>}
+            {group && <span className={styles.metaItem}>{group.name}</span>}
+          </div>
+        </div>
+      )}
+
+      <h2 className={styles.sectionTitle}>Afinidades</h2>
 
       {affinities.length === 0 ? (
         <p className={styles.empty}>
