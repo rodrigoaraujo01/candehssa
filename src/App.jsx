@@ -10,6 +10,7 @@ import GroupPage from './pages/GroupPage'
 import MapPage from './pages/MapPage'
 import LocationDetailPage from './pages/LocationDetailPage'
 import NpcDetailPage from './pages/NpcDetailPage'
+import AffinitySummaryPage from './pages/AffinitySummaryPage'
 
 function AppRoutes() {
   const { user, loading } = useAuth()
@@ -56,6 +57,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <Layout><NpcDetailPage /></Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/afinidades"
+        element={
+          <ProtectedRoute>
+            <Layout><AffinitySummaryPage /></Layout>
           </ProtectedRoute>
         }
       />
