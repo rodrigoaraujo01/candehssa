@@ -77,6 +77,215 @@
   margin-bottom: var(--space-md);
 }
 
+/* Searchable combo — handled in ConditionSearch.module.css */
+
+.effectsSummaryHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+  margin-bottom: 2px;
+}
+
+.effectsSummaryLabel {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.infoBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--color-text-muted);
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.infoBtn:hover {
+  color: var(--color-accent);
+}
+
+.effectValue {
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* Popover */
+
+.popoverBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.popover {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 301;
+  width: min(92vw, 480px);
+  max-height: 80vh;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.popoverHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--color-border-light);
+  flex-shrink: 0;
+}
+
+.popoverTitle {
+  font-family: var(--font-heading);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.popoverClose {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--color-text-muted);
+  padding: 0;
+}
+
+.popoverClose:hover {
+  color: var(--color-text-primary);
+}
+
+.popoverBody {
+  overflow-y: auto;
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.popoverSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.popoverSectionTitle {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.popoverEntry {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.popoverEntryHeader {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+}
+
+.popoverEntryTotal {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.popoverComponents {
+  list-style: none;
+  padding-left: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.popoverComponent {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+}
+
+.popoverCompValue {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  min-width: 2.25rem;
+  flex-shrink: 0;
+}
+
+.popoverCompChain {
+  color: var(--color-text-muted);
+}
+
+.popoverCompEffect {
+  color: var(--color-text-secondary);
+  flex: 1;
+}
+
+.popoverQualList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.popoverQualItem {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.popoverQualText {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+}
+
+.popoverQualSources {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.popoverExpand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.popoverExpandName {
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
 .conditionSelect {
   flex: 1;
   font-family: var(--font-ui);
