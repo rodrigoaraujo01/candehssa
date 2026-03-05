@@ -17,6 +17,10 @@ export default function Layout({ children }) {
     <div className={styles.layout}>
       <header className={styles.header}>
         <Link to="/mapa" className={styles.brand}>Candeh'ssa</Link>
+        <nav className={styles.nav}>
+          <Link to="/mapa" className={styles.navLink}>Mapa</Link>
+          <Link to="/afinidades" className={styles.navLink}>Afinidades</Link>
+        </nav>
         <div className={styles.info}>
           {player && (
             <span className={styles.playerName}>{player.name}</span>
