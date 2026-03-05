@@ -1,0 +1,30 @@
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-md);
+}
+
+.name {
+  margin-bottom: var(--space-xs);
+}
+
+.description {
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  margin-bottom: var(--space-sm);
+}
+
+.counter {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}

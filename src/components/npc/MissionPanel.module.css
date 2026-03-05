@@ -1,0 +1,48 @@
+.panel {
+  border-color: var(--color-accent);
+  border-width: 2px;
+}
+
+.completed {
+  border-color: var(--color-success);
+  background-color: #f0f7f2;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.badge {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-accent);
+  background-color: var(--color-accent-light);
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-sm);
+}
+
+.completedBadge {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-success);
+  background-color: #d4edda;
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-sm);
+}
+
+.title {
+  margin-bottom: var(--space-xs);
+}
+
+.description {
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  margin-bottom: var(--space-md);
+}

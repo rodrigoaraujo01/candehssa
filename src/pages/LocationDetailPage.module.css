@@ -1,0 +1,58 @@
+.back {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-md);
+}
+
+.back:hover {
+  color: var(--color-accent);
+}
+
+.title {
+  margin-bottom: var(--space-xs);
+}
+
+.description {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+.sectionTitle {
+  margin-bottom: var(--space-md);
+}
+
+.npcList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.npcCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.undiscovered {
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.npcInfo {
+  flex: 1;
+}
+
+.npcDescription {
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  margin-top: var(--space-xs);
+}
+
+.viewLink {
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
