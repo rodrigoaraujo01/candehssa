@@ -64,21 +64,15 @@ export function useAffinitySummary() {
         .eq('player_id', player.id)
         .eq('npc_id', npcId)
 
-      if (!error) {
-        setActiveNpcIds(prev => {
-          const next = new Set(prev)
-          next.delete(npcId)
-          return next
-        })
-      }
+      if (!error) setActiveNpcIds(new Set())
     } else {
+      // Remove qualquer NPC ativo anterior e ativa o novo
+      await supabase.from('active_npcs').delete().eq('player_id', player.id)
       const { error } = await supabase
         .from('active_npcs')
         .insert({ player_id: player.id, npc_id: npcId })
 
-      if (!error) {
-        setActiveNpcIds(prev => new Set([...prev, npcId]))
-      }
+      if (!error) setActiveNpcIds(new Set([npcId]))
     }
   }
 

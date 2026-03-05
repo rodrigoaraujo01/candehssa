@@ -57,6 +57,10 @@
   margin-bottom: var(--space-xl);
 }
 
+.summarySectionActive {
+  border-color: var(--color-accent);
+}
+
 .sectionTitle {
   font-family: var(--font-heading);
   font-size: 1.1rem;
@@ -71,6 +75,25 @@
   font-style: italic;
 }
 
+.activeNpcHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.activeNpcName {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.activeNpcName:hover {
+  color: var(--color-accent);
+}
+
 .benefitsList {
   display: flex;
   flex-direction: column;
@@ -83,15 +106,11 @@
   padding: var(--space-sm) var(--space-md);
 }
 
-.benefitNpc {
-  font-family: var(--font-ui);
-  font-size: 0.75rem;
-  color: var(--color-accent);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  display: block;
-  margin-bottom: 2px;
+.benefitHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
 }
 
 .benefitName {
