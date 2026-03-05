@@ -53,6 +53,15 @@ export function formatChain(chain) {
   return chain.join(' → ')
 }
 
+// Movement-speed effects in priority order (most restrictive first).
+// Only one of these should be shown when multiple are present.
+const MOVEMENT_SPEED_PRIORITY = [
+  'Deslocamento: 0m',
+  'Deslocamento: 1,5m',
+  'Deslocamento reduzido à metade',
+  'Deslocamento –3m',
+]
+
 // Compute consolidated effects from an array of active condition objects.
 // Returns { numeric, qualitative, expansionByCondition }
 export function computeConsolidatedEffects(activeConditions) {
@@ -69,10 +78,20 @@ export function computeConsolidatedEffects(activeConditions) {
   const numericMap = new Map()
   // text → { text, chains: string[][] }
   const qualitativeMap = new Map()
+  // Tracks "text@leafCondition" to avoid counting the same sub-condition twice
+  const seenNumericKeys = new Set()
 
   for (const { text, chain } of allExpanded) {
     const numeric = parseNumericEffect(text)
     if (numeric) {
+      // The leaf of the chain is the condition that directly owns this effect.
+      // If two top-level conditions both expand into the same sub-condition,
+      // that sub-condition's numeric effect should only be counted once.
+      const leaf = chain[chain.length - 1]
+      const dedupeKey = `${text}@${leaf}`
+      if (seenNumericKeys.has(dedupeKey)) continue
+      seenNumericKeys.add(dedupeKey)
+
       if (!numericMap.has(numeric.category)) {
         numericMap.set(numeric.category, {
           category: numeric.category,
@@ -91,9 +110,23 @@ export function computeConsolidatedEffects(activeConditions) {
     }
   }
 
+  // If multiple movement-speed effects are active, keep only the most restrictive.
+  let qualitative = Array.from(qualitativeMap.values())
+  const presentMovement = qualitative.filter(e => MOVEMENT_SPEED_PRIORITY.includes(e.text))
+  if (presentMovement.length > 1) {
+    const mostRestrictive = presentMovement.reduce((best, cur) =>
+      MOVEMENT_SPEED_PRIORITY.indexOf(cur.text) < MOVEMENT_SPEED_PRIORITY.indexOf(best.text)
+        ? cur
+        : best
+    )
+    qualitative = qualitative.filter(
+      e => !MOVEMENT_SPEED_PRIORITY.includes(e.text) || e.text === mostRestrictive.text
+    )
+  }
+
   return {
     numeric: Array.from(numericMap.values()),
-    qualitative: Array.from(qualitativeMap.values()),
+    qualitative,
     expansionByCondition,
   }
 }
