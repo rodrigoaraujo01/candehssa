@@ -4,6 +4,12 @@ import { useAffinitySummary } from '../hooks/useAffinitySummary'
 import { useConditions } from '../hooks/useConditions'
 import { usePlayer } from '../contexts/PlayerContext'
 import { CONDITIONS } from '../data/conditions'
+import {
+  computeConsolidatedEffects,
+  formatValue,
+  formatChain,
+} from '../utils/conditionEffects'
+import ConditionSearch from '../components/common/ConditionSearch'
 import Loading from '../components/common/Loading'
 import styles from './AffinitySummaryPage.module.css'
 
@@ -11,13 +17,18 @@ export default function AffinitySummaryPage() {
   const { affinities, activeNpcIds, loading, toggleActive } = useAffinitySummary()
   const { activeConditions, activeNames, loading: condLoading, addCondition, removeCondition, removeAll } = useConditions()
   const { player, group } = usePlayer()
-  const [selectedCondition, setSelectedCondition] = useState('')
+  const [showPopover, setShowPopover] = useState(false)
 
   const availableConditions = CONDITIONS.filter(c => !activeNames.includes(c.name))
 
   if (loading || condLoading) return <Loading />
 
   const activeAffinity = affinities.find(a => activeNpcIds.has(a.npc?.id))
+
+  const { numeric, qualitative, expansionByCondition } =
+    activeConditions.length > 0
+      ? computeConsolidatedEffects(activeConditions)
+      : { numeric: [], qualitative: [], expansionByCondition: {} }
 
   return (
     <div className={styles.page}>
@@ -45,23 +56,10 @@ export default function AffinitySummaryPage() {
 
       <section className={styles.conditionsSection}>
         <div className={styles.conditionsAdd}>
-          <select
-            className={styles.conditionSelect}
-            value={selectedCondition}
-            onChange={e => setSelectedCondition(e.target.value)}
-          >
-            <option value="">Selecione uma condição...</option>
-            {availableConditions.map(c => (
-              <option key={c.name} value={c.name}>{c.name}{c.type ? ` (${c.type})` : ''}</option>
-            ))}
-          </select>
-          <button
-            className={styles.addConditionBtn}
-            disabled={!selectedCondition}
-            onClick={() => { addCondition(selectedCondition); setSelectedCondition('') }}
-          >
-            Adicionar
-          </button>
+          <ConditionSearch
+            conditions={availableConditions}
+            onSelect={name => addCondition(name)}
+          />
         </div>
 
         {activeConditions.length === 0 ? (
@@ -80,19 +78,125 @@ export default function AffinitySummaryPage() {
                 </span>
               ))}
             </div>
+
+            <div className={styles.effectsSummaryHeader}>
+              <span className={styles.effectsSummaryLabel}>Efeitos consolidados</span>
+              <button
+                className={styles.infoBtn}
+                onClick={() => setShowPopover(true)}
+                aria-label="Ver memória de cálculo"
+                title="Memória de cálculo"
+              >ⓘ</button>
+            </div>
+
             <ul className={styles.conditionEffects}>
-              {activeConditions.flatMap(c =>
-                c.effects.map((eff, i) => (
-                  <li key={`${c.name}-${i}`} className={styles.conditionEffect}>
-                    <span className={styles.conditionEffectSource}>{c.name}:</span>
-                    {' '}{eff}
-                  </li>
-                ))
-              )}
+              {numeric.map(entry => (
+                <li key={entry.category} className={styles.conditionEffect}>
+                  <strong className={styles.effectValue}>{formatValue(entry.total)}</strong>
+                  {' '}{entry.category}
+                </li>
+              ))}
+              {qualitative.map(entry => (
+                <li key={entry.text} className={styles.conditionEffect}>
+                  {entry.text}
+                </li>
+              ))}
             </ul>
           </>
         )}
       </section>
+
+      {/* Popover — memória de cálculo */}
+      {showPopover && (
+        <>
+          <div
+            className={styles.popoverBackdrop}
+            onClick={() => setShowPopover(false)}
+          />
+          <div className={styles.popover} role="dialog" aria-modal="true">
+            <div className={styles.popoverHeader}>
+              <span className={styles.popoverTitle}>Memória de Cálculo</span>
+              <button
+                className={styles.popoverClose}
+                onClick={() => setShowPopover(false)}
+                aria-label="Fechar"
+              >×</button>
+            </div>
+
+            <div className={styles.popoverBody}>
+              {numeric.length > 0 && (
+                <section className={styles.popoverSection}>
+                  <h3 className={styles.popoverSectionTitle}>Efeitos numéricos</h3>
+                  {numeric.map(entry => (
+                    <div key={entry.category} className={styles.popoverEntry}>
+                      <div className={styles.popoverEntryHeader}>
+                        <span className={styles.popoverEntryTotal}>
+                          {formatValue(entry.total)} {entry.category}
+                        </span>
+                      </div>
+                      <ul className={styles.popoverComponents}>
+                        {entry.components.map((comp, i) => (
+                          <li key={i} className={styles.popoverComponent}>
+                            <span className={styles.popoverCompValue}>
+                              {formatValue(comp.value)}
+                            </span>
+                            <span className={styles.popoverCompChain}>
+                              {formatChain(comp.chain)}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </section>
+              )}
+
+              {qualitative.length > 0 && (
+                <section className={styles.popoverSection}>
+                  <h3 className={styles.popoverSectionTitle}>Efeitos qualitativos</h3>
+                  <ul className={styles.popoverQualList}>
+                    {qualitative.map(entry => (
+                      <li key={entry.text} className={styles.popoverQualItem}>
+                        <span className={styles.popoverQualText}>{entry.text}</span>
+                        <span className={styles.popoverQualSources}>
+                          {entry.chains.map(formatChain).join(', ')}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
+              {Object.keys(expansionByCondition).some(
+                k => expansionByCondition[k].some(e => e.chain.length > 1)
+              ) && (
+                <section className={styles.popoverSection}>
+                  <h3 className={styles.popoverSectionTitle}>Expansão de condições</h3>
+                  {Object.entries(expansionByCondition).map(([condName, effects]) => {
+                    const indirect = effects.filter(e => e.chain.length > 1)
+                    if (indirect.length === 0) return null
+                    return (
+                      <div key={condName} className={styles.popoverExpand}>
+                        <div className={styles.popoverExpandName}>{condName}</div>
+                        <ul className={styles.popoverComponents}>
+                          {indirect.map((e, i) => (
+                            <li key={i} className={styles.popoverComponent}>
+                              <span className={styles.popoverCompChain}>
+                                via {e.chain.slice(1).join(' → ')}
+                              </span>
+                              <span className={styles.popoverCompEffect}>{e.text}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )
+                  })}
+                </section>
+              )}
+            </div>
+          </div>
+        </>
+      )}
 
       <h2 className={styles.sectionTitle}>Benefícios Ativos</h2>
 
